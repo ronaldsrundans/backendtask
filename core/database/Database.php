@@ -173,9 +173,9 @@ class Database
     }
 
     // example
-    public function simpleInsert($name, $price, $sku){
+    public function simpleInsert($name, $cardnumber, $cardseries, $cardperiod, $dateofissue, $dateofexpiry, $cardsum, $statusofcard){
         $this->connection->query(
-            "INSERT INTO products (name,price,sku) VALUES ('{$sku}',$price,'$sku')"
+            "INSERT INTO cards (name, cardnumber, cardseries, cardperiod, dateofissue, dateofexpiry, cardsum, statusofcard) VALUES ($name,$cardnumber,$cardperiod,$dateofissue, $dateofexpiry, $cardsum, $caatusofcard)"
         );
     }
 }

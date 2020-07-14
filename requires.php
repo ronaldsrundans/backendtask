@@ -3,14 +3,15 @@
 require_once("core/database/Database.php");
 require_once("Configuration.php");
 
-require_once("products/controller/Controller.php");
+require_once("cards/controller/Controller.php");
 
-require_once("products/model/Product.php");
-require_once("products/model/ProductDto.php");
 
-require_once("products/repository/InMemoryRepository.php");
-require_once("products/repository/DatabaseRepository.php");
-require_once("products/repository/ProductRepository.php");
+require_once("cards/model/Card.php");
+require_once("cards/model/CardDto.php");
+
+require_once("cards/repository/InMemoryRepository.php");
+require_once("cards/repository/DatabaseRepository.php");
+require_once("cards/repository/CardRepository.php");
 
 require_once("core/request/Request.php");
 

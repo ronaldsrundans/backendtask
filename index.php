@@ -5,29 +5,29 @@ declare(strict_types=1);
 require_once("requires.php");
 
 switch (getRequestParam("command")) {
-    case "productlist":
-        $repo = new \products\DatabaseRepository();
+    case "cardlist":
+        $repo = new \cards\DatabaseRepository();
         $response = new \response\RequestResponseJson();
-        $controller = new \products\Controller($repo, $response);
-        $controller->productList();
+        $controller = new \cards\Controller($repo, $response);
+        $controller->cardList();
         break;
-    case "productcreate":
-        $repo = new \products\DatabaseRepository();
+    case "cardcreate":
+        $repo = new \cards\DatabaseRepository();
         $response = new \response\RequestResponseJson();
-        $controller = new \products\Controller($repo, $response);
-        $controller->productCreate();
+        $controller = new \cards\Controller($repo, $response);
+        $controller->cardCreate();
         break;
-    case "productupdate":
-        $repo = new \products\DatabaseRepository();
+    case "cardupdate":
+        $repo = new \cards\DatabaseRepository();
         $response = new \response\RequestResponseJson();
-        $controller = new \products\Controller($repo, $response);
-        $controller->productUpdate();
+        $controller = new \cards\Controller($repo, $response);
+        $controller->cardUpdate();
         break;
-    case "productdelete":
-        $repo = new \products\DatabaseRepository();
+    case "carddelete":
+        $repo = new \cards\DatabaseRepository();
         $response = new \response\RequestResponseJson();
-        $controller = new \products\Controller($repo, $response);
-        $controller->productDelete();
+        $controller = new \cards\Controller($repo, $response);
+        $controller->cardDelete();
         break;
     default :
         echo "Nothing to do";
