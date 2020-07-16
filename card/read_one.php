@@ -8,30 +8,26 @@ header('Content-Type: application/json');
   
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/card.php';
   
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
   
 // prepare product object
-$product = new Product($db);
+$test = new Test($db);
   
 // set ID property of record to read
-$product->id = isset($_GET['id']) ? $_GET['id'] : die();
+$test->id = isset($_GET['id']) ? $_GET['id'] : die();
   
 // read the details of product to be edited
-$product->readOne();
+$test->readOne();
   
-if($product->name!=null){
+if($test->testname!=null){
     // create array
-    $product_arr = array(
-        "id" =>  $product->id,
-        "name" => $product->name,
-        "description" => $product->description,
-        "price" => $product->price,
-        "category_id" => $product->category_id,
-        "category_name" => $product->category_name
+    $test_arr = array(
+        "id" =>  $test->id,
+        "testname" => $test->testname
   
     );
   
@@ -39,7 +35,7 @@ if($product->name!=null){
     http_response_code(200);
   
     // make it json format
-    echo json_encode($product_arr);
+    echo json_encode($test_arr);
 }
   
 else{
@@ -47,6 +43,6 @@ else{
     http_response_code(404);
   
     // tell the user product does not exist
-    echo json_encode(array("message" => "Product does not exist."));
+    echo json_encode(array("message" => "Test row does not exist."));
 }
 ?>

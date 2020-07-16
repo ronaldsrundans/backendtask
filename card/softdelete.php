@@ -24,7 +24,7 @@ $data = json_decode(file_get_contents("php://input"));
 $test->id = $data->id;
 
 // delete the product
-if($test->delete()){
+if($test->softdelete()){
 
     // set response code - 200 ok
     http_response_code(200);
