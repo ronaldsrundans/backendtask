@@ -1,50 +1,39 @@
 <?php
 class Card{
-
-    // database connection and table name
     private $conn;
     private $table_name = "cards";
-
-    // object properties
     public $id;
-    public $col1;
-    public $testname;
+    public $number;
+    public $name;
+    public $sum;
+    public $expiry;
+    public $series;
+    public $status;
+    public $issue;
+    public $period;
 
-
-
-    // constructor with $db as database connection
     public function __construct($db){
         $this->conn = $db;
     }
-    // read products
-    function read(){
 
-        // select all query
+    public function read(){
         $query = "SELECT * FROM " . $this->table_name ." WHERE deleted=0";
-
-        // prepare query statement
         $stmt = $this->conn->prepare($query);
-
-        // execute query
         $stmt->execute();
-
         return $stmt;
     }
-// create product
+
     function create(){
-
-        // query to insert record
-        $query = "INSERT INTO " . $this->table_name . " SET testname=:testname, col1=:col1";
-
+        $query = "INSERT INTO " . $this->table_name . " SET name=:name, col1=:col1";
         // prepare query
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->testname=htmlspecialchars(strip_tags($this->testname));
+        $this->name=htmlspecialchars(strip_tags($this->name));
         $this->col1=htmlspecialchars(strip_tags($this->col1));
 
         // bind values
-        $stmt->bindParam(":testname", $this->testname);
+        $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":col1", $this->col1);
 
         // execute query
@@ -59,7 +48,7 @@ class Card{
     function readOne(){
 
         // query to read single record
-        $query = "SELECT testname, col1 FROM " . $this->table_name .   " WHERE id = ? LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->table_name .   " WHERE id = ? LIMIT 0,1";
 
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
@@ -73,25 +62,30 @@ class Card{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // set values to object properties
-        $this->testname = $row['testname'];
-        $this->col1 = $row['col1'];
-
+        $this->name = $row['name'];
+        $this->series = $row['series'];
+        $this->period = $row['period'];
+        $this->issue = $row['issue'];
+        $this->expiry = $row['expiry'];
+        $this->status = $row['status'];
+        $this->sum = $row['sum'];
+        $this->number = $row['number'];
     }
 
     function update(){
 
         // update query
-        $query = "UPDATE " . $this->table_name . " SET testname = :testname, col1 = :col1 WHERE id = :id";
+        $query = "UPDATE " . $this->table_name . " SET name = :name, col1 = :col1 WHERE id = :id";
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->testname=htmlspecialchars(strip_tags($this->testname));
+        $this->name=htmlspecialchars(strip_tags($this->name));
         $this->col1=htmlspecialchars(strip_tags($this->col1));
 
 
         // bind new values
-        $stmt->bindParam(':testname', $this->testname);
+        $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':col1', $this->col1);
         $stmt->bindParam(':id', $this->id);
 
@@ -166,6 +160,43 @@ class Card{
         }
 
         return false;
+    }
+
+    function myFunction(){
+        //echo $this->id;
+        //echo $this->series;
+        //echo $this->validateSeries($this->series) & $this->validatePeriod($this->period);
+        $query = "SELECT count(*) as total FROM " . $this->table_name . " ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->number = $row['total'];
+       // $result=mysql_query($sql);
+        //$data=mysql_fetch_assoc($result);
+        //echo $data['total'];
+        //$stmt = $this->conn->prepare($query);
+
+        /*if($stmt->execute()){
+              return true;
+          }
+
+          return false;*/
+
+    }
+    function validateSeries($series){
+        $validvalues = array("CC","LC","BC");
+        if (in_array($series, $validvalues)) {
+            return true;
+        }
+        else return false;
+    }
+    function validatePeriod($period){
+        $validvalues = array(1,6,12);
+        if (in_array($period, $validvalues)) {
+            return true;
+        }
+        else return false;
     }
 
 }

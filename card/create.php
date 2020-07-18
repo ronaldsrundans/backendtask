@@ -27,11 +27,11 @@ if(
     !empty($data->description) &&
     !empty($data->category_id)*/
     !empty($data->col1) &&
-    !empty($data->testname)
+    !empty($data->name)
 ){
   
     // set product property values
-    $test->testname = $data->testname;
+    $test->name = $data->name;
     $test->col1 = $data->col1;
 
     /*$product->price = $data->price;
@@ -40,7 +40,7 @@ if(
     $product->created = date('Y-m-d H:i:s');*/
   
     // create the product
-    if($test->create()){
+    if($card->create()){
   
         // set response code - 201 created
         http_response_code(201);

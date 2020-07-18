@@ -32,9 +32,13 @@ if($num>0){
   
         $card_item=array(
             "id" => $id,
-            "cardsum" => $cardsum,
-            "cardname" => $cardname
-
+            "sum" => $sum,
+            "number" => $number,
+            "name" => $name,
+            "series" => $series,
+            "issue" => $issue,
+            "expiry" => $expiry,
+            "period" => $period
         );
   
         array_push($cards_arr["data"], $card_item);
