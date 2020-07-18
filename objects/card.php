@@ -166,12 +166,28 @@ class Card{
         //echo $this->id;
         //echo $this->series;
         //echo $this->validateSeries($this->series) & $this->validatePeriod($this->period);
-        $query = "SELECT count(*) as total FROM " . $this->table_name . " ";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        // get retrieved row
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->number = $row['total'];
+        if($this->validateSeries($this->series) & $this->validatePeriod($this->period)) {
+            $query = "SELECT count(*) as total FROM " . $this->table_name . " where series = ? AND period=?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(1, $this->series);
+            $stmt->bindParam(2, $this->period);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->total = $row['total'];
+            $res = (string)$this->total;
+            //echo strlen($res);
+            while (strlen($res) < 8) {
+                $res = "0" . $res;
+            }
+            $periodstr = (string)$this->period;
+            while (strlen($periodstr) < 2) {
+                $periodstr = "0" . $periodstr;
+            }
+            $this->number = $res;
+            $this->name = "PC" . $this->number . $this->series . $periodstr;
+        }
+        //echo $res2;
+
        // $result=mysql_query($sql);
         //$data=mysql_fetch_assoc($result);
         //echo $data['total'];

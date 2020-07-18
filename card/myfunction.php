@@ -1,23 +1,16 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
-// include database and object files
 include_once '../config/database.php';
 include_once '../objects/card.php';
 
-// get database connection
 $database = new Database();
 $db = $database->getConnection();
-
-// prepare product object
 $card = new Card($db);
-
-// set ID property of record to read
 $card->id = isset($_GET['id']) ? $_GET['id'] : die();
 $card->series = isset($_GET['series']) ? $_GET['series'] : die();
 $card->period = isset($_GET['period']) ? $_GET['period'] : die();
@@ -26,10 +19,9 @@ $card->period = isset($_GET['period']) ? $_GET['period'] : die();
 
 // read the details of product to be edited
 $card->myFunction();
-$card_arr = array(
-     "number" =>  $card->number
-);
-echo json_encode($card_arr);
+//echo $card->total;
+echo $card->name;
+
 
 /*
 if($card->name!=null){
