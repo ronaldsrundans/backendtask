@@ -8,35 +8,21 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/test.php';
+include_once '../objects/card.php';
 
-// get database connection
 $database = new Database();
 $db = $database->getConnection();
 
-$test = new Test($db);
+$card = new Card($db);
 
-$data = json_decode(file_get_contents("php://input"));
+$card->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-$test->id = $data->id;
-$test->testname = $data->testname;
-$test->col1 = $data->col1;
-
-if($test->update()){
-
-    // set response code - 200 ok
+if($card->activate()){
     http_response_code(200);
-
-    // tell the user
-    echo json_encode(array("message" => "Test row was updated."));
+    echo json_encode(array("message" => "Card was activated."));
 }
-
 else{
-
-    // set response code - 503 service unavailable
     http_response_code(503);
-
-    // tell the user
-    echo json_encode(array("message" => "Unable to update test row."));
+    echo json_encode(array("message" => "Failed to activate card."));
 }
 ?>
