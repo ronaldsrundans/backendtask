@@ -15,16 +15,16 @@ $database = new Database();
 $db = $database->getConnection();
 
 // prepare product object
-$test = new Test($db);
+$card = new Card($db);
 
 // get product id
 $data = json_decode(file_get_contents("php://input"));
 
 // set product id to be deleted
-$test->id = $data->id;
+$card->id = $data->id;
 
 // delete the product
-if($test->softdelete()){
+if($card->softdelete()){
 
     // set response code - 200 ok
     http_response_code(200);

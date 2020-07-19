@@ -23,7 +23,7 @@ class Card{
         return $stmt;
     }
 
-    function create(){
+   /* function create(){
         $query = "INSERT INTO " . $this->table_name . " SET name=:name, col1=:col1";
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -43,7 +43,7 @@ class Card{
 
         return false;
 
-    }
+    }*/
     // used when filling up the update product form
     function readOne(){
 
@@ -122,15 +122,10 @@ class Card{
     function softdelete(){
         $query = "UPDATE " . $this->table_name . " SET deleted = 1 WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(':id', $this->id);
-
-
-        // execute the query
         if($stmt->execute()){
             return true;
         }
-
         return false;
     }
     function activate(){
@@ -148,7 +143,7 @@ class Card{
         return false;
     }
     function deactivate(){
-        $query = "UPDATE " . $this->table_name . " SET statusofcard = 'not active' WHERE id = :id";
+        $query = "UPDATE " . $this->table_name . " SET status = 'not active' WHERE id = :id";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':id', $this->id);
@@ -162,10 +157,7 @@ class Card{
         return false;
     }
 
-    function myFunction(){
-        //echo $this->id;
-        //echo $this->series;
-        //echo $this->validateSeries($this->series) & $this->validatePeriod($this->period);
+    function create(){
         if($this->validateSeries($this->series) & $this->validatePeriod($this->period)) {
             $query = "SELECT count(*) as total FROM " . $this->table_name . " where series = ? AND period=?";
             $stmt = $this->conn->prepare($query);
@@ -186,29 +178,26 @@ class Card{
             $this->number = $res;
             $this->name = "PC" . $this->number . $this->series . $periodstr;
 
-            $query = "INSERT INTO " . $this->table_name . " SET name=:name, series=:series, number=:number, period=:period, sum=:sum";
+            $query = "INSERT INTO " . $this->table_name . " SET name=:name, series=:series, number=:number, period=:period, sum=:sum, issue=:issue, expiry=:expiry";
             $stmt = $this->conn->prepare($query);
-           // $stmt->execute(array($this->name,$this->series, $this->period, $this->number));
 
-            /*$this->name=htmlspecialchars(strip_tags($this->name));
-            $this->series=htmlspecialchars(strip_tags($this->series));
-            $this->number=htmlspecialchars(strip_tags($this->number));
-            $this->period=htmlspecialchars(strip_tags($this->period));*/
-
-
-            //$stmt = $this->conn->prepare($query);
+            $this->issue=date('Y-m-d');
+            $this->expiry=date('Y-m-d', strtotime("+$this->period months", strtotime(date('Y-m-d'))));
 
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':period', $this->period);
             $stmt->bindParam(':series', $this->series);
             $stmt->bindParam(':number', $this->number);
             $stmt->bindParam(':sum', $this->sum);
+            $stmt->bindParam(':issue',  $this->issue);
+            $stmt->bindParam(':expiry', $this->expiry);
 
-
+         //   $offset = 5; echo date('Y-m-d', strtotime("+$offset months", strtotime('2000-01-01')));
+/*
             echo $query;
             echo "Name:".($this->name);
             echo "Series:".($this->series);
-            echo "Number:".($this->number);
+            echo "Number:".($this->number);*/
             // execute query
            if($stmt->execute()){
                 return true;

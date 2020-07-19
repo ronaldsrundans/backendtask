@@ -1,72 +1,75 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-  
-// get database connection
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
+header('Content-Type: application/json');
+
 include_once '../config/database.php';
-  
-// instantiate product object
 include_once '../objects/card.php';
-  
+
 $database = new Database();
 $db = $database->getConnection();
-  
 $card = new Card($db);
-  
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
-  
-// make sure data is not empty
-if(
-  /*  !empty($data->name) &&
-    !empty($data->price) &&
-    !empty($data->description) &&
-    !empty($data->category_id)*/
-    !empty($data->col1) &&
-    !empty($data->name)
-){
-  
-    // set product property values
-    $test->name = $data->name;
-    $test->col1 = $data->col1;
+//$card->id = isset($_GET['id']) ? $_GET['id'] : die();
+$card->series = isset($_GET['series']) ? $_GET['series'] : die();
+$card->period = isset($_GET['period']) ? $_GET['period'] : die();
+$card->sum = isset($_GET['sum']) ? $_GET['sum'] : die();
 
-    /*$product->price = $data->price;
-    $product->description = $data->description;
-    $product->category_id = $data->category_id;
-    $product->created = date('Y-m-d H:i:s');*/
-  
-    // create the product
-    if($card->create()){
-  
-        // set response code - 201 created
-        http_response_code(201);
-  
-        // tell the user
-        echo json_encode(array("message" => "Inserted new row."));
-    }
-  
-    // if unable to create the product, tell the user
-    else{
-  
-        // set response code - 503 service unavailable
-        http_response_code(503);
-  
-        // tell the user
-        echo json_encode(array("message" => "Unable to insert data."));
-    }
+//$card->sum = isset($_GET['sum']) ? $_GET['sum'] : die();
+
+// read the details of product to be edited
+$card->create();
+//$offset = 5;
+//echo date('Y-m-d', strtotime("+$offset months", strtotime(date('Y-m-d'))));
+
+if($card->name!=null){
+    // set response code - 200 OK
+    http_response_code(200);
+    echo json_encode(array("message" => "New card added to DB."));
+
+    // make it json format
+   // echo json_encode($card_arr);
 }
-  
-// tell the user data is incomplete
+
 else{
-  
-    // set response code - 400 bad request
-    http_response_code(400);
-  
-    // tell the user
-    echo json_encode(array("message" => "Unable to insert. Data is incomplete."));
+    // set response code - 404 Not found
+    http_response_code(404);
+
+    // tell the user product does not exist
+    echo json_encode(array("message" => "Failed to create new card."));
 }
+//echo $card->total;
+//echo $card->name;
+
+
+/*
+if($card->name!=null){
+    // create array
+    $card_arr = array(
+        "id" =>  $card->id,
+        "name" => $card->name,
+        "sum" => $card->sum,
+        "period" =>  $card->period,
+        "issue" => $card->issue,
+        "expiry" => $card->expiry,
+        "number" =>  $card->number,
+        "status" => $card->status
+
+    );
+
+    // set response code - 200 OK
+    http_response_code(200);
+
+    // make it json format
+    echo json_encode($card_arr);
+}
+
+else{
+    // set response code - 404 Not found
+    http_response_code(404);
+
+    // tell the user product does not exist
+    echo json_encode(array("message" => "Card id does not exist."));
+}*/
 ?>
