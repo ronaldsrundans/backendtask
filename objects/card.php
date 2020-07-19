@@ -185,19 +185,41 @@ class Card{
             }
             $this->number = $res;
             $this->name = "PC" . $this->number . $this->series . $periodstr;
+
+            $query = "INSERT INTO " . $this->table_name . " SET name=:name, series=:series, number=:number, period=:period, sum=:sum";
+            $stmt = $this->conn->prepare($query);
+           // $stmt->execute(array($this->name,$this->series, $this->period, $this->number));
+
+            /*$this->name=htmlspecialchars(strip_tags($this->name));
+            $this->series=htmlspecialchars(strip_tags($this->series));
+            $this->number=htmlspecialchars(strip_tags($this->number));
+            $this->period=htmlspecialchars(strip_tags($this->period));*/
+
+
+            //$stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(':name', $this->name);
+            $stmt->bindParam(':period', $this->period);
+            $stmt->bindParam(':series', $this->series);
+            $stmt->bindParam(':number', $this->number);
+            $stmt->bindParam(':sum', $this->sum);
+
+
+            echo $query;
+            echo "Name:".($this->name);
+            echo "Series:".($this->series);
+            echo "Number:".($this->number);
+            // execute query
+           if($stmt->execute()){
+                return true;
+            }
+
+            return false;
+
+
+
         }
-        //echo $res2;
 
-       // $result=mysql_query($sql);
-        //$data=mysql_fetch_assoc($result);
-        //echo $data['total'];
-        //$stmt = $this->conn->prepare($query);
-
-        /*if($stmt->execute()){
-              return true;
-          }
-
-          return false;*/
 
     }
     function validateSeries($series){
