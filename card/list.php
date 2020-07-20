@@ -5,8 +5,8 @@ header("Content-Type: application/json; charset=UTF-8");
   
 // database connection will be here
 // include database and object files
-include_once '../config/database.php';
-include_once '../objects/card.php';
+require_once '../config/database.php';
+require_once '../objects/card.php';
   
 // instantiate database and product object
 $database = new Database();
@@ -17,7 +17,7 @@ $card = new Card($db);
   
 // read products will be here
 // query products
-$stmt = $card->read();
+$stmt = $card->list();
 $num = $stmt->rowCount();
   
 // check if more than 0 record found

@@ -4,9 +4,9 @@ header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
-  
-include_once '../config/database.php';
-include_once '../objects/card.php';
+
+require_once '../config/database.php';
+require_once '../objects/card.php';
   
 $database = new Database();
 $db = $database->getConnection();
@@ -15,7 +15,7 @@ $card = new Card($db);
   
 $card->id = isset($_GET['id']) ? $_GET['id'] : die();
   
-$card->readOne();
+$card->item();
   
 if($card->name!=null){
     $card_arr = array(

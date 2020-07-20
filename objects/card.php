@@ -15,13 +15,13 @@ class Card{
     public function __construct($db){
         $this->conn = $db;
     }
-    public function read(){
+    public function list(){
         $query = "SELECT * FROM " . $this->table_name ." WHERE deleted=0";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
-    public function readOne(){
+    public function item(){
         $query = "SELECT * FROM " . $this->table_name ." WHERE id = ? LIMIT 0,1";
         $stmt = $this->conn->prepare( $query );
         $stmt->bindParam(1, $this->id);
