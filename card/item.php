@@ -1,8 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: access");
-header("Access-Control-Allow-Methods: GET");
-header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
 require_once '../config/database.php';
@@ -15,18 +11,14 @@ $card = new Card($db);
   
 $card->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-$stmt = $card->item();
-$num = $stmt->rowCount();
+$result = $card->item();
+$num = $result->rowCount();
 
 if($num>0){
-
     $cards_arr=array();
     $cards_arr["data"]=array();
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)){
         extract($row);
-
         $card_item=array(
             "id" => $id,
             "sum" => $sum,

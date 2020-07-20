@@ -1,28 +1,18 @@
 <?php
-// required headers
-header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-
 require_once '../config/database.php';
 require_once '../objects/card.php';
   
 $database = new Database();
 $db = $database->getConnection();
-
 $card = new Card($db);
-
 $stmt = $card->list();
 $num = $stmt->rowCount();
-
 if($num>0){
-  
     $cards_arr=array();
     $cards_arr["data"]=array();
-
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-
         extract($row);
-  
         $card_item=array(
             "id" => $id,
             "sum" => $sum,

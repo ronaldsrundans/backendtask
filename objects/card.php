@@ -17,16 +17,16 @@ class Card{
     }
     public function list(){
         $query = "SELECT * FROM " . $this->table_name ." WHERE deleted=0";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
+        $result = $this->conn->prepare($query);
+        $result->execute();
+        return $result;
     }
     public function item(){
         $query = "SELECT * FROM " . $this->table_name ." WHERE id = ? LIMIT 0,1";
-        $stmt = $this->conn->prepare( $query );
-        $stmt->bindParam(1, $this->id);
-        $stmt->execute();
-        return $stmt;
+        $result = $this->conn->prepare( $query );
+        $result->bindParam(1, $this->id);
+        $result->execute();
+        return $result;
     }
     public function delete(){
         $query = "UPDATE " . $this->table_name . " SET deleted = 1, status='not active' WHERE id = :id";
