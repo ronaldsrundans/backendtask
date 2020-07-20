@@ -27,16 +27,6 @@ class Card{
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
         return $stmt;
-       /* $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        $this->name = $row['name'];
-        $this->series = $row['series'];
-        $this->period = $row['period'];
-        $this->issue = $row['issue'];
-        $this->expiry = $row['expiry'];
-        $this->status = $row['status'];
-        $this->sum = $row['sum'];
-        $this->number = $row['number'];*/
     }
     public function delete(){
         $query = "UPDATE " . $this->table_name . " SET deleted = 1, status='not active' WHERE id = :id";

@@ -35,7 +35,9 @@ if($num>0){
             "series" => $series,
             "issue" => $issue,
             "expiry" => $expiry,
-            "period" => $period
+            "period" => $period,
+            "status" => $status
+
         );
         array_push($cards_arr["data"], $card_item);
     }
