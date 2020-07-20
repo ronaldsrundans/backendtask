@@ -15,9 +15,7 @@ $card->series = isset($_GET['series']) ? $_GET['series'] : die();
 $card->period = isset($_GET['period']) ? $_GET['period'] : die();
 $card->sum = isset($_GET['sum']) ? $_GET['sum'] : 0;
 
-$card->create();
-
-if($card->name!=null){
+if($card->create()){
     http_response_code(200);
     echo json_encode(array("message" => "New card added to DB."));
 }

@@ -2,15 +2,15 @@
 class Card{
     private $conn;
     private $table_name = "cards";
-    public $id;
-    public $number;
-    public $name;
-    public $sum;
-    public $expiry;
-    public $series;
-    public $status;
-    public $issue;
-    public $period;
+    public int $id;
+    public string $number;
+    public string $name;
+    public int $sum;
+    public string $expiry;
+    public string $series;
+    public string $status;
+    public string $issue;
+    public int $period;
 
     public function __construct($db){
         $this->conn = $db;
@@ -26,7 +26,8 @@ class Card{
         $stmt = $this->conn->prepare( $query );
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt;
+       /* $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->name = $row['name'];
         $this->series = $row['series'];
@@ -35,7 +36,7 @@ class Card{
         $this->expiry = $row['expiry'];
         $this->status = $row['status'];
         $this->sum = $row['sum'];
-        $this->number = $row['number'];
+        $this->number = $row['number'];*/
     }
     public function delete(){
         $query = "UPDATE " . $this->table_name . " SET deleted = 1, status='not active' WHERE id = :id";
@@ -57,6 +58,15 @@ class Card{
     }
     public function deactivate(){
         $query = "UPDATE " . $this->table_name . " SET status = 'not active' WHERE deleted=0 and id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $this->id);
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function expire(){
+        $query = "UPDATE " . $this->table_name . " SET status = 'expired' WHERE deleted=0 and id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $this->id);
         if($stmt->execute()){

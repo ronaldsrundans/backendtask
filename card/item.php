@@ -14,22 +14,34 @@ $db = $database->getConnection();
 $card = new Card($db);
   
 $card->id = isset($_GET['id']) ? $_GET['id'] : die();
-  
-$card->item();
-  
-if($card->name!=null){
-    $card_arr = array(
-        "id" =>  $card->id,
-        "name" => $card->name,
-        "sum" => $card->sum,
-        "period" =>  $card->period,
-        "issue" => $card->issue,
-        "expiry" => $card->expiry,
-        "number" =>  $card->number,
-        "status" => $card->status
-    );
+
+$stmt = $card->item();
+$num = $stmt->rowCount();
+
+if($num>0){
+
+    $cards_arr=array();
+    $cards_arr["data"]=array();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+        extract($row);
+
+        $card_item=array(
+            "id" => $id,
+            "sum" => $sum,
+            "number" => $number,
+            "name" => $name,
+            "series" => $series,
+            "issue" => $issue,
+            "expiry" => $expiry,
+            "period" => $period
+        );
+        array_push($cards_arr["data"], $card_item);
+    }
     http_response_code(200);
-    echo json_encode($card_arr);
+    echo json_encode($cards_arr);
+
 }
 else{
     http_response_code(404);
