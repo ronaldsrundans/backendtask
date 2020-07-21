@@ -30,7 +30,6 @@ class Card{
     }
     public function delete(){
         if($this->verifyID($this->id)) {
-            //echo
             $query = "UPDATE " . $this->table_name . " SET deleted = 1, status='not active' WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $this->id);

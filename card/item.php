@@ -6,14 +6,10 @@ require_once '../objects/card.php';
   
 $database = new Database();
 $db = $database->getConnection();
-  
 $card = new Card($db);
-  
 $card->id = isset($_GET['id']) ? $_GET['id'] : die();
-
 $result = $card->item();
 $num = $result->rowCount();
-
 if($num>0){
     $cards_arr=array();
     $cards_arr["data"]=array();
@@ -29,7 +25,6 @@ if($num>0){
             "expiry" => $expiry,
             "period" => $period,
             "status" => $status
-
         );
         array_push($cards_arr["data"], $card_item);
     }
