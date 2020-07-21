@@ -10,10 +10,10 @@ $data = json_decode(file_get_contents("php://input"));
 $card->id = $data->id;
 if($card->delete()){
     http_response_code(200);
-    echo json_encode(array("message" => "Test row was deleted."));
+    echo json_encode(array("message" => "The card was deleted."));
 }
 else{
     http_response_code(503);
-    echo json_encode(array("message" => "Unable to delete test row."));
+    echo json_encode(array("message" => "Unable to delete card."));
 }
 ?>

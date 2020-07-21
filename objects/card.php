@@ -29,31 +29,43 @@ class Card{
         return $result;
     }
     public function delete(){
-        $query = "UPDATE " . $this->table_name . " SET deleted = 1, status='not active' WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $this->id);
-        if($stmt->execute()){
+        if($this->verifyID($this->id)) {
+            //echo
+            $query = "UPDATE " . $this->table_name . " SET deleted = 1, status='not active' WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $this->id);
+            $stmt->execute();
             return true;
         }
-        return false;
+        else{
+            return false;
+        }
+
     }
     public function activate(){
-        $query = "UPDATE ".$this->table_name ." SET status = 'active' WHERE deleted = 0 and id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $this->id);
-        if($stmt->execute()){
+        if($this->verifyID($this->id)) {
+            $query = "UPDATE ".$this->table_name ." SET status = 'active' WHERE deleted = 0 and id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $this->id);
+            $stmt->execute();
             return true;
         }
-        return false;
+        else{
+            return false;
+        }
     }
     public function deactivate(){
-        $query = "UPDATE " . $this->table_name . " SET status = 'not active' WHERE deleted=0 and id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $this->id);
-        if($stmt->execute()){
+        if($this->verifyID($this->id)) {
+            $query = "UPDATE " . $this->table_name . " SET status = 'not active' WHERE deleted=0 and id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $this->id);
+            $stmt->execute();
             return true;
         }
-        return false;
+        else{
+            return false;
+        }
+
     }
     public function expire(){
         $query = "UPDATE " . $this->table_name . " SET status = 'expired' WHERE deleted=0 and id = :id";
@@ -120,6 +132,20 @@ class Card{
             return true;
         }
         else return false;
+    }
+    private function verifyID($id){
+        $query = "SELECT count(*) as total FROM " . $this->table_name . " where id = ? and deleted = 0";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->total = $row['total'];
+        if($this->total>0) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 ?>
